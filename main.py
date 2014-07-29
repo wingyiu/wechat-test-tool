@@ -8,7 +8,7 @@ timestamp = '1406619842'
 nonce = '123456654321'
 echostr = 'hello'
 
-default_from_open_id = 'gh_sfaqer134sdfa'
+default_from_open_id = 'oLFPQjub4lnsv1uhsrZC3NUB5rnk'
 default_to_open_id = 'gh_sdfasdfsadfsd'
 
 TEMPLATE_REQUEST_URL = '%s?signature=%s&timestamp=%s&nonce=%s&echostr=%s'
@@ -20,6 +20,76 @@ TEMPLATE_MSG_TEXT = '''
 <CreateTime>123456789</CreateTime>
 <MsgType><![CDATA[text]]></MsgType>
 <Content><![CDATA[%s]]></Content>
+<MsgId>1234567890123456</MsgId>
+</xml>'''
+
+TEMPLATE_MSG_IMAGE = '''
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1348831860</CreateTime>
+<MsgType><![CDATA[image]]></MsgType>
+<PicUrl><![CDATA[%s]]></PicUrl>
+<MediaId><![CDATA[%s]]></MediaId>
+<MsgId>1234567890123456</MsgId>
+</xml>'''
+
+TEMPLATE_MSG_VOICE = '''
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1357290913</CreateTime>
+<MsgType><![CDATA[voice]]></MsgType>
+<MediaId><![CDATA[%s]]></MediaId>
+<Format><![CDATA[%s]]></Format>
+<MsgId>1234567890123456</MsgId>
+</xml>'''
+
+TEMPLATE_MSG_VIDEO = '''
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1357290913</CreateTime>
+<MsgType><![CDATA[video]]></MsgType>
+<MediaId><![CDATA[%s]]></MediaId>
+<ThumbMediaId><![CDATA[%s]]></ThumbMediaId>
+<MsgId>1234567890123456</MsgId>
+</xml>'''
+
+TEMPLATE_MSG_VIDEO_RECONGNITION = '''
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1357290913</CreateTime>
+<MsgType><![CDATA[voice]]></MsgType>
+<MediaId><![CDATA[%s]]></MediaId>
+<Format><![CDATA[%s]]></Format>
+<Recognition><![CDATA[%s]]></Recognition>
+<MsgId>1234567890123456</MsgId>
+</xml>'''
+
+TEMPLATE_MSG_LOCATION = '''
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1351776360</CreateTime>
+<MsgType><![CDATA[location]]></MsgType>
+<Location_X>%s</Location_X>
+<Location_Y>%s</Location_Y>
+<Scale>%s</Scale>
+<Label><![CDATA[%s]]></Label>
+<MsgId>1234567890123456</MsgId>
+</xml>'''
+
+TEMPLATE_MSG_LINK = '''
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1351776360</CreateTime>
+<MsgType><![CDATA[link]]></MsgType>
+<Title><![CDATA[%s]]></Title>
+<Description><![CDATA[%s]]></Description>
+<Url><![CDATA[%s]]></Url>
 <MsgId>1234567890123456</MsgId>
 </xml>'''
 
@@ -41,8 +111,15 @@ TEMPLATE_MSG_SUBSCRIBE_SCENE = '''
 <Ticket><![CDATA[%s]]></Ticket>
 </xml>'''
 
-
 TEMPLATE_MSG_SCAN = '''
+<xml><ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1234567890</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[SCAN]]></Event>
+</xml>'''
+
+TEMPLATE_MSG_SCAN_SCENE = '''
 <xml><ToUserName><![CDATA[%s]]></ToUserName>
 <FromUserName><![CDATA[%s]]></FromUserName>
 <CreateTime>1234567890</CreateTime>
@@ -96,7 +173,15 @@ def send_msg_subscribe_default(scene_id='', ticket='ticket'):
     send_msg(msg)
 
 
+def send_msg_scan_default(scene_id='', ticket='ticket'):
+    if scene_id:
+        msg = TEMPLATE_MSG_SCAN_SCENE % (default_to_open_id, default_from_open_id, scene_id, ticket)
+    else:
+        msg = TEMPLATE_MSG_SCAN % (default_to_open_id, default_from_open_id)
+    send_msg(msg)
+
+
 if __name__ == '__main__':
     valid_url_and_token()
-    send_msg_subscribe_default()
+    send_msg_subscribe_default('1001')
     send_msg_text_default('来自自动测试工具')
