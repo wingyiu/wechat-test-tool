@@ -340,14 +340,22 @@ def send_msg_click(from_open_id, key):
     send_msg(msg)
 
 
+def send_msg_click_default(key):
+    send_msg_click(default_from_open_id, key)
+
+    
 def send_msg_view(from_open_id, view):
     msg = TEMPLATE_MSG_VIEW % (default_to_open_id, from_open_id, view)
     send_msg(msg)
 
 
+def send_msg_view_default(view):
+    send_msg_view(default_from_open_id, view)
+    
+
 if __name__ == '__main__':
     valid_url_and_token()
     send_msg_subscribe_default()
     send_msg_text_default()
-    send_msg_click('MY_CARD')
-    send_msg_click('MY_CARD')
+    send_msg_click_default('MY_CARD')
+    send_msg_click_default('MY_CARD')
