@@ -4,6 +4,7 @@ import hashlib
 
 server_url = 'http://localhost:2985/api/wechat/index.aspx'
 token = 'zhelishitoken'
+
 timestamp = '1406619842'
 nonce = '123456654321'
 echostr = 'hello'
@@ -23,6 +24,7 @@ default_location_x = '23.134521'
 default_location_y = '113.358803'
 default_location_scale = '20'
 default_location_label = '广州羊城创意园'
+default_location_precision = '119.385040'
 default_link_title = '洋葱名片'
 default_link_description = '首款微信CRM'
 default_link_url = 'http://www.yangcong.im'
@@ -100,6 +102,18 @@ TEMPLATE_MSG_LOCATION = '''
 <MsgId>1234567890123456</MsgId>
 </xml>'''
 
+TEMPLATE_MSG_LOCATION_REPORT = '''
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1234567890</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[LOCATION]]></Event>
+<Latitude>%s</Latitude>
+<Longitude>%s</Longitude>
+<Precision>%s</Precision>
+</xml>'''
+
 TEMPLATE_MSG_LINK = '''
 <xml>
 <ToUserName><![CDATA[%s]]></ToUserName>
@@ -146,6 +160,35 @@ TEMPLATE_MSG_SCAN_SCENE = '''
 <Event><![CDATA[SCAN]]></Event>
 <EventKey><![CDATA[%s]]></EventKey>
 <Ticket><![CDATA[%s]]></Ticket>
+</xml>'''
+
+TEMPLATE_MSG_UNSUBSCRIBE = '''
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1234567890</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[unsubscribe]]></Event>
+</xml>'''
+
+TEMPLATE_MSG_CLICK = '''
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1234567890</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[CLICK]]></Event>
+<EventKey><![CDATA[%s]]></EventKey>
+</xml>'''
+
+TEMPLATE_MSG_VIEW = '''
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1234567890</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[VIEW]]></Event>
+<EventKey><![CDATA[%s]]></EventKey>
 </xml>'''
 
 
@@ -229,6 +272,15 @@ def send_msg_location_default():
                       default_location_label)
 
 
+def send_msg_location_report(from_open_id, x, y, precision):
+    msg = TEMPLATE_MSG_LOCATION_REPORT % (default_to_open_id, from_open_id, x, y, precision)
+    send_msg(msg)
+
+
+def send_msg_location_report_default():
+    send_msg_location_report(default_from_open_id, default_location_x, default_location_y, default_location_precision)
+
+
 def send_msg_link(from_open_id, title, description, url):
     msg = TEMPLATE_MSG_LOCATION % (default_to_open_id, from_open_id, title, description, url)
     send_msg(msg)
@@ -274,7 +326,28 @@ def send_msg_scan_scene_default():
     send_msg_scan_scene(default_from_open_id, default_scene_id, default_ticket)
 
 
+def send_msg_unsubscribe(from_open_id):
+    msg = TEMPLATE_MSG_UNSUBSCRIBE % (default_to_open_id, from_open_id)
+    send_msg(msg)
+
+
+def send_msg_unsubscribe_default():
+    send_msg_unsubscribe(default_from_open_id)
+
+
+def send_msg_click(from_open_id, key):
+    msg = TEMPLATE_MSG_CLICK % (default_to_open_id, from_open_id, key)
+    send_msg(msg)
+
+
+def send_msg_view(from_open_id, view):
+    msg = TEMPLATE_MSG_VIEW % (default_to_open_id, from_open_id, view)
+    send_msg(msg)
+
+
 if __name__ == '__main__':
     valid_url_and_token()
     send_msg_subscribe_default()
     send_msg_text_default()
+    send_msg_click('MY_CARD')
+    send_msg_click('MY_CARD')
