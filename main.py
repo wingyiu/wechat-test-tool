@@ -282,7 +282,7 @@ def send_msg_location_report_default():
 
 
 def send_msg_link(from_open_id, title, description, url):
-    msg = TEMPLATE_MSG_LOCATION % (default_to_open_id, from_open_id, title, description, url)
+    msg = TEMPLATE_MSG_LINK % (default_to_open_id, from_open_id, title, description, url)
     send_msg(msg)
 
 
