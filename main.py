@@ -11,6 +11,25 @@ echostr = 'hello'
 default_from_open_id = 'oLFPQjub4lnsv1uhsrZC3NUB5rnk'
 default_to_open_id = 'gh_sdfasdfsadfsd'
 
+default_text = '洋葱名片'
+default_image_media_id = '123123123'
+default_image_url = 'http://www.yangcong.im'
+default_voice_media_id = '321312321'
+default_voice_format = 'amr'
+default_voice_recognition = '嗷嗷嗷嗷'
+default_video_media_id = '998998998'
+default_video_thumb_media_id = '992992992'
+default_location_x = '23.134521'
+default_location_y = '113.358803'
+default_location_scale = '20'
+default_location_label = '广州羊城创意园'
+default_link_title = '洋葱名片'
+default_link_description = '首款微信CRM'
+default_link_url = 'http://www.yangcong.im'
+default_scene_id = '1002'
+default_ticket = 'ticket'
+
+
 TEMPLATE_REQUEST_URL = '%s?signature=%s&timestamp=%s&nonce=%s&echostr=%s'
 
 TEMPLATE_MSG_TEXT = '''
@@ -45,18 +64,7 @@ TEMPLATE_MSG_VOICE = '''
 <MsgId>1234567890123456</MsgId>
 </xml>'''
 
-TEMPLATE_MSG_VIDEO = '''
-<xml>
-<ToUserName><![CDATA[%s]]></ToUserName>
-<FromUserName><![CDATA[%s]]></FromUserName>
-<CreateTime>1357290913</CreateTime>
-<MsgType><![CDATA[video]]></MsgType>
-<MediaId><![CDATA[%s]]></MediaId>
-<ThumbMediaId><![CDATA[%s]]></ThumbMediaId>
-<MsgId>1234567890123456</MsgId>
-</xml>'''
-
-TEMPLATE_MSG_VIDEO_RECONGNITION = '''
+TEMPLATE_MSG_VOICE_RECOGNITION = '''
 <xml>
 <ToUserName><![CDATA[%s]]></ToUserName>
 <FromUserName><![CDATA[%s]]></FromUserName>
@@ -65,6 +73,17 @@ TEMPLATE_MSG_VIDEO_RECONGNITION = '''
 <MediaId><![CDATA[%s]]></MediaId>
 <Format><![CDATA[%s]]></Format>
 <Recognition><![CDATA[%s]]></Recognition>
+<MsgId>1234567890123456</MsgId>
+</xml>'''
+
+TEMPLATE_MSG_VIDEO = '''
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>1357290913</CreateTime>
+<MsgType><![CDATA[video]]></MsgType>
+<MediaId><![CDATA[%s]]></MediaId>
+<ThumbMediaId><![CDATA[%s]]></ThumbMediaId>
 <MsgId>1234567890123456</MsgId>
 </xml>'''
 
@@ -151,7 +170,7 @@ def send_msg(msg):
     req = urllib2.Request(request_url(), msg)
     response = urllib2.urlopen(req)
     xml = response.read()
-    print 'RESULT:'
+    print 'RESULT :'
     print xml
 
 
@@ -160,28 +179,102 @@ def send_msg_text(from_open_id, content):
     send_msg(msg)
 
 
-def send_msg_text_default(content):
-    msg = TEMPLATE_MSG_TEXT % (default_to_open_id, default_from_open_id, content)
+def send_msg_text_default():
+    send_msg_text(default_from_open_id, default_text)
+
+
+def send_msg_image(from_open_id, media_id, pic_url):
+    msg = TEMPLATE_MSG_IMAGE % (default_to_open_id, from_open_id, media_id, pic_url)
     send_msg(msg)
 
 
-def send_msg_subscribe_default(scene_id='', ticket='ticket'):
-    if scene_id:
-        msg = TEMPLATE_MSG_SUBSCRIBE_SCENE % (default_to_open_id, default_from_open_id, scene_id, ticket)
-    else:
-        msg = TEMPLATE_MSG_SUBSCRIBE % (default_to_open_id, default_from_open_id)
+def send_msg_image_default():
+    send_msg_image(default_from_open_id, default_image_media_id, default_image_url)
+
+
+def send_msg_voice(from_open_id, media_id, voice_format):
+    msg = TEMPLATE_MSG_VOICE % (default_to_open_id, from_open_id, media_id, voice_format)
     send_msg(msg)
 
 
-def send_msg_scan_default(scene_id='', ticket='ticket'):
-    if scene_id:
-        msg = TEMPLATE_MSG_SCAN_SCENE % (default_to_open_id, default_from_open_id, scene_id, ticket)
-    else:
-        msg = TEMPLATE_MSG_SCAN % (default_to_open_id, default_from_open_id)
+def send_msg_voice_default():
+    send_msg_voice(default_from_open_id, default_voice_media_id, default_voice_format)
+
+
+def send_msg_voice_recognition(from_open_id, media_id, voice_format, recognition):
+    msg = TEMPLATE_MSG_VOICE_RECOGNITION % (default_to_open_id, from_open_id, media_id, voice_format, recognition)
     send_msg(msg)
+
+
+def send_msg_voice_recognition_default():
+    send_msg_voice(default_from_open_id, default_voice_media_id, default_voice_format, default_voice_recognition)
+
+
+def send_msg_video(from_open_id, media_id, thumb_media_id):
+    msg = TEMPLATE_MSG_VIDEO % (default_to_open_id, from_open_id, media_id, thumb_media_id)
+    send_msg(msg)
+
+
+def send_msg_video_default():
+    send_msg_video(default_from_open_id, default_video_media_id, default_video_thumb_media_id)
+
+
+def send_msg_location(from_open_id, x, y, scale, label):
+    msg = TEMPLATE_MSG_LOCATION % (default_to_open_id, from_open_id, x, y, scale, label)
+    send_msg(msg)
+
+
+def send_msg_location_default():
+    send_msg_location(default_from_open_id, default_location_x, default_location_y, default_location_scale,
+                      default_location_label)
+
+
+def send_msg_link(from_open_id, title, description, url):
+    msg = TEMPLATE_MSG_LOCATION % (default_to_open_id, from_open_id, title, description, url)
+    send_msg(msg)
+
+
+def send_msg_link_default():
+    send_msg_link(default_from_open_id, default_link_title, default_link_description, default_link_url)
+
+
+def send_msg_subscribe(from_open_id):
+    msg = TEMPLATE_MSG_SUBSCRIBE % (default_to_open_id, from_open_id)
+    send_msg(msg)
+
+
+def send_msg_subscribe_default():
+    send_msg_subscribe(default_from_open_id)
+
+
+def send_msg_subscribe_scene(from_open_id, scene_id, ticket):
+    msg = TEMPLATE_MSG_SUBSCRIBE_SCENE % (default_to_open_id, from_open_id, scene_id, ticket)
+    send_msg(msg)
+
+
+def send_msg_subscribe_scene_default():
+    send_msg_subscribe_scene(default_from_open_id, default_scene_id, default_ticket)
+
+
+def send_msg_scan(from_open_id):
+    msg = TEMPLATE_MSG_SCAN % (default_to_open_id, from_open_id)
+    send_msg(msg)
+
+
+def send_msg_scan_default():
+    send_msg_scan(default_from_open_id)
+
+
+def send_msg_scan_scene(from_open_id, scene_id, ticket):
+    msg = TEMPLATE_MSG_SCAN_SCENE % (default_to_open_id, from_open_id, scene_id, ticket)
+    send_msg(msg)
+
+
+def send_msg_scan_scene_default():
+    send_msg_scan_scene(default_from_open_id, default_scene_id, default_ticket)
 
 
 if __name__ == '__main__':
     valid_url_and_token()
-    send_msg_subscribe_default('1001')
-    send_msg_text_default('来自自动测试工具')
+    send_msg_subscribe_default()
+    send_msg_text_default()
